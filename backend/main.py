@@ -6,6 +6,7 @@ from sqlalchemy import desc
 from typing import List, Optional
 from contextlib import asynccontextmanager
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
 
 from database import init_db, get_db, verify_db_connection, Chat, Embedding, PDFDocument, PDFChunkEmbedding, User
 from models import (
@@ -615,6 +616,15 @@ async def share_chat(
 #    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://memory-tssr.vercel.app"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def health_check():

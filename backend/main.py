@@ -611,5 +611,11 @@ async def share_chat(
         logger.error(f"❌ Error sharing chat: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Error sharing chat: {str(e)}")
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+#if __name__ == "__main__":
+#    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+app = FastAPI()
+
+@app.get("/")
+def health_check():
+    return {"status": "Memory backend is running"}

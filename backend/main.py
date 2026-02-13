@@ -51,11 +51,19 @@ app = FastAPI(title="Memory Application API", lifespan=lifespan)
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],  # React dev servers
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "https://memory-tssr.vercel.app"  # add your Vercel URL here
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+def health_check():
+    return {"status": "Memory backend is running"}
 
 @app.post("/api/chat", response_model=MessageResponse)
 async def chat(request: MessageRequest, db: Session = Depends(get_db)):
@@ -615,17 +623,5 @@ async def share_chat(
 #if __name__ == "__main__":
 #    uvicorn.run(app, host="0.0.0.0", port=8000)
 
-app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "https://memory-tssr.vercel.app"
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
-@app.get("/")
-def health_check():
-    return {"status": "Memory backend is running"}
+
